@@ -1,0 +1,6 @@
+.list-item{
+    border-bottom: 3px solid rgb(120, 120, 248);
+    padding-bottom: 10px;
+    display: flex;
+    flex-grow: 1;
+}

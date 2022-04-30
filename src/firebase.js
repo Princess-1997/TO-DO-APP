@@ -3,6 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 
+
 const app = initializeApp({
     apiKey: "AIzaSyCbxieslpK9MEc0VhbB4bEM6cBQk0kNI4c",
     authDomain: "to-do-app-a227c.firebaseapp.com",

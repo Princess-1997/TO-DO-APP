@@ -1,7 +1,8 @@
 import React from 'react'
+import './Todo.css';
 
 export default function Todo(props) {
   return (
-    <div>{props.title}</div>
+    <div className='list-item'>{props.title}</div>
   )
 }
