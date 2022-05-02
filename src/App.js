@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, doc, setDoc, getDocs, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, doc, setDoc, getDocs, updateDoc, deleteDoc, query, orderBy} from "firebase/firestore";
 import { getDatabase, ref, set } from "firebase/database";
 
 import './App.css';
@@ -17,7 +17,8 @@ function App() {
   useEffect(()=>{
     async function getData(db){
         const ToDos = collection(db, 'todos');
-        const TodosSnapshot = await getDocs(ToDos);
+        const q = query(ToDos, orderBy('time', 'asc'));
+        const TodosSnapshot = await getDocs(q);
         setTodos(TodosSnapshot.docs.map(doc => doc.data().title));
         setStatus(TodosSnapshot.docs.map(doc => doc.data().status));
         setTodoId(TodosSnapshot.docs.map(doc => doc.id));
@@ -28,12 +29,12 @@ function App() {
   async function addTodo(e){
     e.preventDefault();
     const newTodo = doc(collection(db, "todos"));
-    await setDoc(newTodo, {title:input,status:'pending'});
+    await setDoc(newTodo, {title:input,status:'pending',time:`${Date.now()}`});
     setInput('');
   }
 
   async function onPending(index){
-    if(status[index]=='pending'){
+    if(status[index]==='pending'){
       const docRef=doc(db,'todos',todoId[index]);
       await updateDoc(docRef,{status:'done'})
     }else{
@@ -62,7 +63,7 @@ function App() {
               <button className={status[i]==='pending'?'pending-btn btn':'done-btn btn'} onClick={()=>onPending(i)}>
                 {status[i]==='pending'?'Pending':'✔️Done'}</button>
               <Todo title={i+1+'. '+todo} key={i}/>
-              <button className='remove-btn btn' onClick={()=>onRemove(i)}>Remove</button>
+              {status[i]==='pending'? <button className='remove-btn btn' onClick={()=>onRemove(i)}>Remove</button>:''}
             </div>)
         )}
         </div>
